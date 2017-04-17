@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+    
+    <entry>
+      <title><![CDATA[Hexo GitHub blog搭建]]></title>
+      <url>%2FNoWorry%2F2017%2F04%2F17%2F20170417%2F</url>
+      <content type="text"><![CDATA[#ssh生产绑定1ssh-keygen -t rsa -b 4096 -C &quot;kevin24067@gmail.com&quot; 1eval $(ssh-agent -s) 1ssh-add ~/.ssh/id_rsa 1clip &lt; ~/.ssh/id_rsa.pub #安装插件1npm install hexo-deployer-git --save 1git config --global core.autocrlf false 1npm install hexo-generator-feed --save 1npm install -- save-dev hexo-util 1npm install hexo-generator-searchdb --save #创建博客123456hexo inithexo new post &quot;&quot;hexo ghexo shexo dhexo clean]]></content>
+    </entry>
+
+    
+  
+  
+</search>

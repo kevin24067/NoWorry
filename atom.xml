@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>漏歪理-noworry</title>
+  
+  <link href="/NoWorry/atom.xml" rel="self"/>
+  
+  <link href="https://kevin24067.github.io/NoWorry/"/>
+  <updated>2017-04-17T09:43:29.998Z</updated>
+  <id>https://kevin24067.github.io/NoWorry/</id>
+  
+  <author>
+    <name>kevin</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo GitHub blog搭建</title>
+    <link href="https://kevin24067.github.io/NoWorry/2017/04/17/20170417/"/>
+    <id>https://kevin24067.github.io/NoWorry/2017/04/17/20170417/</id>
+    <published>2017-04-17T04:56:40.000Z</published>
+    <updated>2017-04-17T09:43:29.998Z</updated>
+    
+    <content type="html"><![CDATA[<hr>
+<p>#ssh生产绑定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -b 4096 -C &quot;kevin24067@gmail.com&quot;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eval $(ssh-agent -s)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-add ~/.ssh/id_rsa</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">clip &lt; ~/.ssh/id_rsa.pub</div></pre></td></tr></table></figure>
+<p>#安装插件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git config --global core.autocrlf false</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-feed --save</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -- save-dev hexo-util</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-searchdb --save</div></pre></td></tr></table></figure>
+<p>#创建博客<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">hexo init</div><div class="line">hexo new post &quot;&quot;</div><div class="line">hexo g</div><div class="line">hexo s</div><div class="line">hexo d</div><div class="line">hexo clean</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;#ssh生产绑定&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;
+    
+    </summary>
+    
+      <category term="hexo" scheme="https://kevin24067.github.io/NoWorry/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="https://kevin24067.github.io/NoWorry/tags/hexo/"/>
+    
+  </entry>
+  
+</feed>
