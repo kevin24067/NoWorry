@@ -5,7 +5,7 @@
   <link href="/NoWorry/atom.xml" rel="self"/>
   
   <link href="https://kevin24067.github.io/NoWorry/"/>
-  <updated>2017-04-19T06:35:42.864Z</updated>
+  <updated>2017-04-19T10:32:37.772Z</updated>
   <id>https://kevin24067.github.io/NoWorry/</id>
   
   <author>
@@ -14,6 +14,84 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PKI中常用到证书密钥申请文件及其转换</title>
+    <link href="https://kevin24067.github.io/NoWorry/2017/04/19/PKI/"/>
+    <id>https://kevin24067.github.io/NoWorry/2017/04/19/PKI/</id>
+    <published>2017-04-19T10:06:34.000Z</published>
+    <updated>2017-04-19T10:32:37.772Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="PKI标准规范梳理"><a href="#PKI标准规范梳理" class="headerlink" title="PKI标准规范梳理"></a>PKI标准规范梳理</h2><p><strong>PKI标准</strong>可以分为第一代和第二代标准。</p>
+<h3 id="第一代PKI标准"><a href="#第一代PKI标准" class="headerlink" title="第一代PKI标准"></a><strong>第一代PKI标准</strong></h3><p>主要包括<br>美国RSA公司的公钥加密标准（Public Key Cryptography Standards，<strong>PKCS</strong>）系列<br>国际电信联盟的ITU-T X.509、IETF组织的公钥基础设施<strong>X.509</strong>（Public Key Infrastructure X.509，PKIX）标准系列<br>无线应用协议（Wireless Application Protocol ,WAP）论坛的无线公钥基础设施（Wireless Public Key Infrastructure，WPKI）标准等。<br>第一代PKI标准主要是基于<strong>抽象语法符号（Abstract Syntax Notation One，ASN.1）编码</strong>的，实现比较困难，这也在一定程度上影响了标准的推广。</p>
+<blockquote>
+<p><strong>PKCS(Public Key Cryptography Standards)</strong>系列标准<br><em>PKCS是由美国RSA数据安全公司及其合作伙伴制定的一组公钥密码学标准，其中包括证书申请、证书更新、证书作废表发布、扩展证书内容以及数字签名、数字信封的格式等方面的一系列相关协议。到1999年底，PKCS已经公布了以下标准：</em><br><strong>PKCS#1</strong>：定义RSA公开密钥算法加密和签名机制，主要用于组织PKCS#7中所描述的数字签名和数字信封。<a href="https://tools.ietf.org/html/rfc2313.html" target="_blank" rel="external">https://tools.ietf.org/html/rfc2313.html</a><br><strong>PKCS#3</strong>：定义Diffie-Hellman密钥交换协议。<br><strong>PKCS#5</strong>：描述一种利用从口令派生出来的安全密钥加密字符串的方法。使用MD2或MD5从口令中派生密钥，并采用DES-CBC模式加密。主要用于加密从一个计算机传送到另一个计算机的私人密钥，不能用于加密消息。<br><strong>PKCS#6</strong>：描述了公钥证书的标准语法，主要描述X.509证书的扩展格式。<br><strong>PKCS#7</strong>：定义一种通用的消息语法，包括数字签名和加密等用于增强的加密机制，PKCS#7与PEM兼容，所以不需其他密码操作，就可以将加密的消息转换成PEM消息。<a href="https://tools.ietf.org/html/rfc2315" target="_blank" rel="external">https://tools.ietf.org/html/rfc2315</a><br><strong>PKCS#8</strong>：描述私有密钥信息格式，该信息包括公开密钥算法的私有密钥以及可选的属性集等。<br><strong>PKCS#9</strong>：定义一些用于PKCS#6证书扩展、PKCS#7数字签名和PKCS#8私钥加密信息的属性类型。<br><strong>PKCS#10</strong>：描述证书请求语法。<br><strong>PKCS#11</strong>：称为Cyptoki，定义了一套独立于技术的程序设计接口，用于智能卡和PCMCIA卡之类的加密设备。<br><strong>PKCS#12</strong>：描述个人信息交换语法标准。描述了将用户公钥、私钥、证书和其他相关信息打包的语法。<a href="https://tools.ietf.org/html/rfc7292" target="_blank" rel="external">https://tools.ietf.org/html/rfc7292</a><br><strong>PKCS#13</strong>：椭圆曲线密码体制标准。<br><strong>PKCS#14</strong>：伪随机数生成标准。<br><strong>PKCS#15</strong>：密码令牌信息格式标准。</p>
+<p><strong>X.509</strong>是由国际电信联盟（ITU-T）制定的<strong>数字证书标准</strong>。在X.500确保用户名称惟一性的基础上，X.509为X.500用户名称提供了通信实体的鉴别机制，并规定了实体鉴别过程中广泛适用的证书语法和数据接口。<br><strong>X.509证书</strong>由用户公共密钥和用户标识符组成。此外还包括版本号、证书序列号、CA标识符、签名算法标识、签发者名称、证书有效期等信息。这一标准的最新版本是X.509 v3，它定义了包含扩展信息的数字证书。该版数字证书提供了一个扩展信息字段，用来提供更多的灵活性及特殊应用环境下所需的信息传送。<a href="https://www.ietf.org/rfc/rfc5280.txt" target="_blank" rel="external">https://www.ietf.org/rfc/rfc5280.txt</a></p>
+</blockquote>
+<h3 id="第二代PKI标准"><a href="#第二代PKI标准" class="headerlink" title="第二代PKI标准"></a><strong>第二代PKI标准</strong></h3><p>在2001年，由微软、VeriSign和webMethods三家公司发布了XML密钥管理规范(XML Key Management Specification，XKMS)。</p>
+<h2 id="规范应用CER-PEM-DER-CRT-PFX-CRS等"><a href="#规范应用CER-PEM-DER-CRT-PFX-CRS等" class="headerlink" title="规范应用CER,PEM,DER,CRT,PFX,CRS等"></a>规范应用CER,PEM,DER,CRT,PFX,CRS等</h2><h3 id="编码格式"><a href="#编码格式" class="headerlink" title="编码格式"></a>编码格式</h3><p>同样的X.509证书,可能有不同的编码格式,目前有以下两种编码格式.</p>
+<p><strong>PEM</strong> - Privacy Enhanced Mail,打开看文本格式,以”—–BEGIN…”开头, “—–END…”结尾,内容是BASE64编码.<br>查看PEM格式证书的信息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in certificate.pem -text -noout</div></pre></td></tr></table></figure>
+<p>Apache和*NIX服务器偏向于使用这种编码格式.</p>
+<p><strong>DER</strong> - Distinguished Encoding Rules,打开看是二进制格式,不可读.<br>查看DER格式证书的信息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in certificate.der -inform der -text -noout</div></pre></td></tr></table></figure>
+<p>Java和Windows服务器偏向于使用这种编码格式.</p>
+<h3 id="相关的文件扩展名"><a href="#相关的文件扩展名" class="headerlink" title="相关的文件扩展名"></a>相关的文件扩展名</h3><p>这是比较误导人的地方,虽然我们已经知道有PEM和DER这两种编码格式,但文件扩展名并不一定就叫”PEM”或者”DER”,常见的扩展名除了PEM和DER还有以下这些,它们除了编码格式可能不同之外,内容也有差别,但大多数都能相互转换编码格式.</p>
+<ul>
+<li><p><strong>CRT</strong> - CRT应该是certificate的三个字母,其实还是证书的意思,常见于*NIX系统,有可能是PEM编码,也有可能是DER编码,大多数应该是PEM编码,相信你已经知道怎么辨别.</p>
+</li>
+<li><p><strong>CER</strong> - 还是certificate,还是证书,常见于Windows系统,同样的,可能是PEM编码,也可能是DER编码,大多数应该是DER编码.</p>
+</li>
+<li><p><strong>KEY</strong> - 通常用来存放一个公钥或者私钥,并非X.509证书,编码同样的,可能是PEM,也可能是DER.<br>  查看KEY的办法:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl rsa -in mykey.key -text -noout</div></pre></td></tr></table></figure>
+<p>  如果是DER格式的话,同理应该这样了:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl rsa -in mykey.key -text -noout -inform der</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>CSR</strong> - Certificate Signing Request,即证书签名请求,这个并不是证书,而是向权威证书颁发机构获得签名证书的申请,其核心内容是一个公钥(当然还附带了一些别的信息),在生成这个申请的时候,同时也会生成一个私钥,私钥要自己保管好。<br>查看的办法(如果是DER格式的话照旧加上-inform der,这里不写了)：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl req -noout -text -in my.csr</div></pre></td></tr></table></figure>
+</li>
+<li><p><strong>PFX/P12</strong> - predecessor of PKCS#12,对<em>nix服务器来说,一般CRT和KEY是分开存放在不同文件中的,但Windows的IIS则将它们存在一个PFX文件中,(因此这个文件包含了证书及私钥)这样会不会不安全？应该不会,PFX通常会有一个”<em>*提取密码</em></em>“,你想把里面的东西读取出来的话,它就要求你提供提取密码,PFX使用的时DER编码,如何把PFX转换为PEM编码？</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl pkcs12 -in for-iis.pfx -out for-iis.pem -nodes</div></pre></td></tr></table></figure>
+<p>  这个时候会提示你输入提取代码. for-iis.pem就是可读的文本.<br>  生成pfx的命令类似这样:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl pkcs12 -export -in certificate.crt -inkey privateKey.key -out certificate.pfx -certfile CACert.crt</div></pre></td></tr></table></figure>
+<p>  其中<strong>CACert.crt是CA(权威证书颁发机构)的根证书</strong>,有的话也通过-certfile参数一起带进去.这么看来,<strong>PFX其实是个证书密钥库</strong>.</p>
+</li>
+<li><p><strong>JKS</strong> - 即Java Key Storage,这是Java的专利,跟OpenSSL关系不大,利用Java的一个叫”keytool”的工具,可以将PFX转为JKS,当然了,keytool也能直接生成JKS,不过在此就不多表了.</p>
+</li>
+</ul>
+<h3 id="证书编码的转换"><a href="#证书编码的转换" class="headerlink" title="证书编码的转换"></a>证书编码的转换</h3><ul>
+<li><p>PEM转为DER </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in cert.crt -outform der -out cert.der</div></pre></td></tr></table></figure>
+</li>
+<li><p>DER转为PEM </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl x509 -in cert.crt -inform der -outform pem -out cert.pem</div></pre></td></tr></table></figure>
+<p>  (提示:要转换KEY文件也类似,只不过把x509换成rsa,要转CSR的话,把x509换成req…)</p>
+</li>
+</ul>
+<h3 id="获得证书"><a href="#获得证书" class="headerlink" title="获得证书"></a>获得证书</h3><ul>
+<li><p><strong>向权威证书颁发机构申请证书</strong></p>
+<p>  把csr交给权威证书颁发机构,权威证书颁发机构对此进行签名,完成.保留好csr,当权威证书颁发机构颁发的证书过期的时候,你还可以用同样的csr来申请新的证书,key保持不变.<br>  用这命令生成一个csr: </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl req -newkey rsa:2048 -new -nodes -keyout my.key -out my.csr</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><strong>生成自签名的证书</strong><br>  在生成证书的过程中会要你填一堆的东西,其实真正要填的只有Common Name,通常填写你服务器的域名,如”yourcompany.com”,或者你服务器的IP地址,其它都可以留空的.  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>生产环境中还是不要使用自签的证书,否则浏览器会不认,或者如果你是企业应用的话能够强制让用户的浏览器接受你的自签证书也行.向权威机构要证书通常是要钱的,但现在也有免费的,仅仅需要一个简单的域名验证即可.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;PKI标准规范梳理&quot;&gt;&lt;a href=&quot;#PKI标准规范梳理&quot; class=&quot;headerlink&quot; title=&quot;PKI标准规范梳理&quot;&gt;&lt;/a&gt;PKI标准规范梳理&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;PKI标准&lt;/strong&gt;可以分为第一代和第二代标准。&lt;/p&gt;
+&lt;
+    
+    </summary>
+    
+    
+      <category term="PKI,CER,PEM,DER,PFX,JKS" scheme="https://kevin24067.github.io/NoWorry/tags/PKI-CER-PEM-DER-PFX-JKS/"/>
+    
+  </entry>
   
   <entry>
     <title>SSL原理及openssl模拟</title>
