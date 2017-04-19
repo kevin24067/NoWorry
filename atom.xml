@@ -5,7 +5,7 @@
   <link href="/NoWorry/atom.xml" rel="self"/>
   
   <link href="https://kevin24067.github.io/NoWorry/"/>
-  <updated>2017-04-17T09:43:29.998Z</updated>
+  <updated>2017-04-19T06:35:42.864Z</updated>
   <id>https://kevin24067.github.io/NoWorry/</id>
   
   <author>
@@ -16,11 +16,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SSL原理及openssl模拟</title>
+    <link href="https://kevin24067.github.io/NoWorry/2017/04/19/HTTPS/"/>
+    <id>https://kevin24067.github.io/NoWorry/2017/04/19/HTTPS/</id>
+    <published>2017-04-19T01:44:55.000Z</published>
+    <updated>2017-04-19T06:35:42.864Z</updated>
+    
+    <content type="html"><![CDATA[<p>参考文档</p>
+<blockquote>
+<p>openssl 文档  <a href="https://www.openssl.org/docs/man1.0.2/apps/" target="_blank" rel="external">https://www.openssl.org/docs/man1.0.2/apps/</a></p>
+</blockquote>
+<h2 id="SSL交互图"><a href="#SSL交互图" class="headerlink" title="SSL交互图"></a>SSL交互图</h2><p><img src="sslmessages.gif" alt="SSL消息交互图"><br><strong>SSL握手包含3大阶段</strong></p>
+<ol>
+<li>协定算法套件</li>
+<li>互相验证身份</li>
+<li>协定加密机制</li>
+</ol>
+<p><strong>SSL协议的客户端服务器连接握手过程大致如下：</strong></p>
+<ol>
+<li>客户端发送一个「ClientHello」消息，说明它支持的密码算法列表以及最高协议版本等必要的信息</li>
+<li>服务器返回支持的SSL版本，加密算法列表，以及自己的证书等。如果客户端请求的资源需要认证，服务器请求客户端发送证书。</li>
+<li>客户端首先验证服务器，如果认证失败，则断开连接，认证成功则执行下一步；</li>
+<li>客户端发送<strong>pre-master secret(S)</strong>（用服务器的公钥加密）和自己的证书（如果服务器需要验证身份）</li>
+<li>服务器验证客户端，用自己的私钥得到pre-master secret，然后经过一系列步骤生成<strong>master secret(K)</strong>。</li>
+<li>客户端和服务器使用master secret生成对称密钥session key，之后传输的收据均使用<strong>session key(SS)</strong>加密解密。</li>
+<li>客户端发送消息声明之后的数据用session key加密，并发送一条加密数据表明握手结束</li>
+<li>服务器发送消息声明之后的数据用session key加密，并发送一条加密数据表明握手结束<br><em>S-&gt;K-&gt;SS 一系列技术就不展开了！（自己也没有搞明白）</em></li>
+</ol>
+<p><strong>算法套件（the cipher suites）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ openssl ciphers -V -tls1|grep &quot;Enc=AESGCM(256)&quot;</div><div class="line">          0xC0,0x30 - ECDHE-RSA-AES256-GCM-SHA384 TLSv1.2 Kx=ECDH     Au=RSA  Enc=AESGCM(256) Mac=AEAD</div><div class="line">          0x00,0x9D - AES256-GCM-SHA384       TLSv1.2 Kx=RSA      Au=RSA  Enc=AESGCM(256) Mac=AEAD</div></pre></td></tr></table></figure>
+<p>Kx：密钥协商交互算法<br>Au :  身份认证算法<br>Enc：加密算法（用于数据传输）<br>Mac: 消息指纹（用于保证数据完整性）</p>
+<h2 id="openssl调试"><a href="#openssl调试" class="headerlink" title="openssl调试"></a>openssl调试</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ openssl version</div><div class="line">OpenSSL 1.0.2h  3 May 2016</div></pre></td></tr></table></figure>
+<p>##查看本地可以用算法套件<br>查看本地可用TLS1.0 TLS1.1 TLS1.2的算法套件 grep 加密算法为AELSGCM(256)的所以算法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl ciphers -V -tls1|grep &quot;Enc=AESGCM(256)&quot;</div></pre></td></tr></table></figure>
+<h2 id="openssl-s-server-模拟https-web-server"><a href="#openssl-s-server-模拟https-web-server" class="headerlink" title="openssl s_server 模拟https web server"></a>openssl s_server 模拟https web server</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#创建密钥对</div><div class="line">openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes</div><div class="line"></div><div class="line">#启动HTTPS server</div><div class="line">openssl s_server -key key.pem -cert cert.pem -cipher &apos;ECDHE-RSA-AES256-GCM-SHA384&apos;  -accept 443 -www</div></pre></td></tr></table></figure>
+<h2 id="openssl-s-client-模拟-HTTPS-client-指定算法套件"><a href="#openssl-s-client-模拟-HTTPS-client-指定算法套件" class="headerlink" title="openssl s_client  模拟 HTTPS client 指定算法套件"></a>openssl s_client  模拟 HTTPS client 指定算法套件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openssl s_client   -cipher &apos;ECDHE-RSA-AES128-GCM-SHA256&apos; -connect  127.0.0.1:443</div></pre></td></tr></table></figure>
+<h2 id="curl-调试HTTPS"><a href="#curl-调试HTTPS" class="headerlink" title="curl 调试HTTPS"></a>curl 调试HTTPS</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#模拟握手异常</div><div class="line">$ curl -vvv --tlsv1.2 --ciphers &apos;AES256-GCM-SHA384&apos; https://localhost</div><div class="line">* Rebuilt URL to: https://localhost/</div><div class="line">* timeout on name lookup is not supported</div><div class="line">*   Trying ::1...</div><div class="line">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current</div><div class="line">                                 Dload  Upload   Total   Spent    Left  Speed</div><div class="line">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 127.0.0.1...</div><div class="line">* Connected to localhost (127.0.0.1) port 443 (#0)</div><div class="line">* ALPN, offering h2</div><div class="line">* ALPN, offering http/1.1</div><div class="line">* Cipher selection: AES256-GCM-SHA384</div><div class="line">* successfully set certificate verify locations:</div><div class="line">*   CAfile: C:/Program Files/Git/mingw64/ssl/certs/ca-bundle.crt</div><div class="line">  CApath: none</div><div class="line">* TLSv1.2 (OUT), TLS header, Certificate Status (22):</div><div class="line">&#125; [5 bytes data]</div><div class="line">* TLSv1.2 (OUT), TLS handshake, Client hello (1):</div><div class="line">&#125; [130 bytes data]</div><div class="line">* TLSv1.2 (IN), TLS header, Unknown (21):</div><div class="line">&#123; [5 bytes data]</div><div class="line">* TLSv1.2 (IN), TLS alert, Server hello (2):</div><div class="line">&#123; [2 bytes data]</div><div class="line">* error:14077410:SSL routines:SSL23_GET_SERVER_HELLO:sslv3 alert handshake failure</div><div class="line">  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0</div><div class="line">* Closing connection 0</div><div class="line">curl: (35) error:14077410:SSL routines:SSL23_GET_SERVER_HELLO:sslv3 alert handshake failure</div><div class="line"></div><div class="line">#正常连接</div><div class="line">curl -vvv --tlsv1.2 --ciphers &apos;ECDHE-RSA-AES128-GCM-SHA256&apos; https://localhost</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;参考文档&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;openssl 文档  &lt;a href=&quot;https://www.openssl.org/docs/man1.0.2/apps/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.ope
+    
+    </summary>
+    
+    
+      <category term="HTTPS,SSL,TLS,openssl,curl,JSSE,JCA,CRT,PEM" scheme="https://kevin24067.github.io/NoWorry/tags/HTTPS-SSL-TLS-openssl-curl-JSSE-JCA-CRT-PEM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hexo GitHub blog搭建</title>
     <link href="https://kevin24067.github.io/NoWorry/2017/04/17/20170417/"/>
     <id>https://kevin24067.github.io/NoWorry/2017/04/17/20170417/</id>
     <published>2017-04-17T04:56:40.000Z</published>
-    <updated>2017-04-17T09:43:29.998Z</updated>
+    <updated>2017-04-17T09:53:38.467Z</updated>
     
     <content type="html"><![CDATA[<hr>
 <p>#ssh生产绑定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa -b 4096 -C &quot;kevin24067@gmail.com&quot;</div></pre></td></tr></table></figure></p>
@@ -33,6 +85,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -- save-dev hexo-util</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-searchdb --save</div></pre></td></tr></table></figure>
 <p>#创建博客<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">hexo init</div><div class="line">hexo new post &quot;&quot;</div><div class="line">hexo g</div><div class="line">hexo s</div><div class="line">hexo d</div><div class="line">hexo clean</div></pre></td></tr></table></figure></p>
+<p>##刪除文章</p>
+<p>至 \source_posts 底下找到要刪除的文章，並刪除<br>在 Hexo 的 Node Cmd 中執行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo clean</div></pre></td></tr></table></figure>
+<p>刪掉根目錄下的 db.json</p>
+<p>在 Hexo 的 Node Cmd 中執行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo g</div></pre></td></tr></table></figure>
+<p>在 Hexo 的 Node Cmd 中執行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo d</div></pre></td></tr></table></figure></p>
 ]]></content>
     
     <summary type="html">
